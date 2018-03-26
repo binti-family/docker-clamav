@@ -1,5 +1,4 @@
 FROM debian:jessie
-MAINTAINER http://m-ko.de Markus Kosmal <dude@m-ko.de>
 
 # Debian Base to use
 ENV DEBIAN_VERSION jessie
@@ -10,12 +9,16 @@ RUN echo "deb http://http.debian.net/debian/ $DEBIAN_VERSION main contrib non-fr
     echo "deb http://security.debian.org/ $DEBIAN_VERSION/updates main contrib non-free" >> /etc/apt/sources.list && \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y -qq \
+        clamav \
         clamav-daemon \
         clamav-freshclam \
         libclamunrar7 \
         wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+COPY ./clamav/clamd.conf /etc/clamav/clamd.conf
+COPY ./clamav/freshclam.conf /etc/clamav/freshclam.conf
 
 # initial update of av databases
 RUN wget -O /var/lib/clamav/main.cvd http://database.clamav.net/main.cvd && \
@@ -40,5 +43,5 @@ VOLUME ["/var/lib/clamav"]
 EXPOSE 3310
 
 # av daemon bootstrapping
-ADD bootstrap.sh /
+COPY bootstrap.sh /
 CMD ["/bootstrap.sh"]
