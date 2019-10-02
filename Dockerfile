@@ -13,7 +13,6 @@ RUN echo "deb http://http.debian.net/debian/ $DEBIAN_VERSION main contrib non-fr
         clamdscan \
         clamav-daemon \
         clamav-freshclam \
-        libclamunrar7 \
         wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
