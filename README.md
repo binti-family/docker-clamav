@@ -6,12 +6,12 @@
 
 # Optimized
 
-Try the new alpine based version:
+Try the alpine based version:
 ```bash
     docker run -d -p 3310:3310 mk0x/docker-clamav:alpine
 ```
 
-Alpine version reduces foot print to something about 10%.
+Alpine version reduces foot print to something about less than 5%, compressed size in docker hub is 6.72 MB compared to debian 216.21 MB.
 
 ## Hub
 Find new hub image at [hub.docker.com](https://hub.docker.com/r/mkodockx/docker-clamav)
@@ -43,7 +43,7 @@ Find the latest releases at the official [docker hub](https://hub.docker.com/r/m
 
 ## Usage
 
-### Debian Stretch Slim (default, :latest, :stretch-slim)
+### Debian Buster Slim (default, :latest, :buster-slim)
 ```bash
     docker run -d -p 3310:3310 mk0x/docker-clamav
 ```

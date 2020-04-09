@@ -1,7 +1,8 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
+LABEL maintainer="Markus Kosmal <dude@m-ko.de> https://m-ko.de"
 
 # Debian Base to use
-ENV DEBIAN_VERSION stretch
+ENV DEBIAN_VERSION buster
 
 # initial install of av daemon
 RUN echo "deb http://http.debian.net/debian/ $DEBIAN_VERSION main contrib non-free" > /etc/apt/sources.list && \
@@ -13,6 +14,8 @@ RUN echo "deb http://http.debian.net/debian/ $DEBIAN_VERSION main contrib non-fr
         clamdscan \
         clamav-daemon \
         clamav-freshclam \
+        libclamunrar9 \
+        ca-certificates \
         wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -37,6 +40,9 @@ RUN sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/clamd.conf && \
     if ! [ -z $HTTPProxyServer ]; then echo "HTTPProxyServer $HTTPProxyServer" >> /etc/clamav/freshclam.conf; fi && \
     if ! [ -z $HTTPProxyPort   ]; then echo "HTTPProxyPort $HTTPProxyPort" >> /etc/clamav/freshclam.conf; fi && \
     sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/freshclam.conf
+
+# env based configs - will be called by bootstrap.sh
+ADD envconfig.sh /
 
 # volume provision
 VOLUME ["/var/lib/clamav"]
