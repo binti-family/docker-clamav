@@ -24,10 +24,8 @@ COPY ./clamav/clamd.conf /etc/clamav/clamd.conf
 COPY ./clamav/freshclam.conf /etc/clamav/freshclam.conf
 
 # initial update of av databases
-RUN wget -O /var/lib/clamav/main.cvd http://database.clamav.net/main.cvd && \
-    wget -O /var/lib/clamav/daily.cvd http://database.clamav.net/daily.cvd && \
-    wget -O /var/lib/clamav/bytecode.cvd http://database.clamav.net/bytecode.cvd && \
-    chown clamav:clamav /var/lib/clamav/*.cvd
+COPY ./refreshdb.sh /tmp
+RUN /tmp/refreshdb.sh
 
 # permission juggling
 RUN mkdir /var/run/clamav && \
